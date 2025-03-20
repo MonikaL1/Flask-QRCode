@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        /* Reset default margins and paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f1f2f6, #dfe6e9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Main container for the page */
+        .main-container {
+            width: 80%;
+            max-width: 1000px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        /* Title and introduction styling */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2d3436;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: #636e72;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* Layout for the form and QR code section */
+        .content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Styling for the form on the left */
+        .form-container {
+            width: 45%;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #2d3436;
+        }
+
+        .form-container input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-container input[type="text"]:focus {
+            border-color: #0984e3;
+            outline: none;
+        }
+
+        .form-container button {
+            width: 100%;
+            background-color: #2d3436;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #74b9ff;
+            transform: translateY(-2px);
+        }
+
+        /* Styling for the QR code display section */
+        .qr-code-container {
+            width: 45%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            background-color: #fff;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: opacity 1s, transform 1s;
+            flex-direction: column;
+        }
+
+        .qr-code-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+        }
+
+        .download-btn {
+            background-color: #2d3436;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #636e72;
+            transform: translateY(-2px);
+        }
+
+        .download-btn:active {
+            background-color: #2d3436;
+            transform: translateY(1px);
+        }
+
+        /* Footer section styling */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Title and introduction -->
+        <div class="header">
+            <h1>QR Code Generator</h1>
+            <p class="intro-text">
+                Welcome! Enter a name and a link below to generate a custom QR Code.<br>
+                You can also download it once created.
+            </p>
+
+        </div>
+
+        <!-- Form and QR code container -->
+        <div class="content">
+            <!-- Form Section -->
+            <div class="form-container">
+                <form method="POST">
+                    <label for="link_name">Link Name</label>
+                    <input type="text" name="link_name" id="link_name" required>
+
+                    <label for="link">Link</label>
+                    <input type="text" name="link" id="link" required>
+
+                    <button type="submit">Generate QR Code</button>
+                </form>
+            </div>
+
+            <!-- QR Code Display Section -->
+            <div class="qr-code-container" id="qrCodeContainer">
+                {% if img_url %}
+                    <img src="{{ img_url }}" alt="Generated QR Code">
+                    <a href="{{ img_url }}" download="{{ link_name }}.png">
+                        <button class="download-btn">Download QR Code</button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>QR Code Generator &copy; 2025 | Made with <span style="color: #e74c3c;">&#10084;</span> </p>
+        </div>
+
+    </div>
+
+    <script>
+        // If the QR code is generated, animate the QR code container to appear
+        {% if img_url %}
+            document.getElementById('qrCodeContainer').style.opacity = 1;
+            document.getElementById('qrCodeContainer').style.transform = 'translateX(0)';
+        {% endif %}
+    </script>
+
+</body>
+</html>
